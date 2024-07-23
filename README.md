@@ -1,6 +1,6 @@
 # Yasmina-and-Lucien-Shell-Problem-Project-Friday-26-July
 
-# Analyze and Summarize System Logs
+# Analyze and Summarse System Logs
 
 
 ## User Story
