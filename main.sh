@@ -13,4 +13,21 @@ check_cpu_usage() {
   fi
 }
 
+
+check_memory_usage() {
+  MEMORY_USAGE=$(free | grep Mem | awk '{print $3/$2 * 100.0}')
+  TOTAL_MEMORY=$(free -m | grep Mem | awk '{print $2}')
+  USED_MEMORY=$(free -m | grep Mem | awk '{print $3}')
+  echo -e "Memory Usage: ${YELLOW}$MEMORY_USAGE%${NC}"
+  echo -e "Total Memory: ${YELLOW}${TOTAL_MEMORY}MB${NC}"
+  echo -e "Used Memory: ${YELLOW}${USED_MEMORY}MB${NC}"
+  if (( $(echo "$MEMORY_USAGE > $MEMORY_THRESHOLD" | bc -l) )); then
+    echo -e "${RED}ALERT: Memory usage is above $MEMORY_THRESHOLD%${NC}"
+  else
+    echo -e "${GREEN}Memory usage is within normal range.${NC}"
+  fi
+}
+
+
 check_cpu_usage
+check_memory_usage
