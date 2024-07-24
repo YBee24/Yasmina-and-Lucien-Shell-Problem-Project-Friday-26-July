@@ -29,5 +29,12 @@ check_memory_usage() {
 }
 
 
+top_cpu_processes() {
+  echo -e "${YELLOW}Top 3 CPU consuming processes:${NC}"
+  ps -eo pid,ppid,cmd,%cpu --sort=-%cpu | head -n 4 | tail -n 3 | awk '{print $1 " " $2 " " $3 " " $4 "%"}'
+}
+
+
 check_cpu_usage
 check_memory_usage
+top_cpu_processes
