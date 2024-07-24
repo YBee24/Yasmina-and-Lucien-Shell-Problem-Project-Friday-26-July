@@ -1,4 +1,4 @@
-
+echo "Good evening Lucien. Thank you dearly for helping me so, very much concerning the wonderful EC2 issue I had been experiencing. Let's get this project underway, eh?!"
 
 generate_summary() {
     local log_dir=$1
