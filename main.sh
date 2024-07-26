@@ -8,6 +8,28 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
+check_disk_usage() {
+	DISK_USAGE=$(df -h / | grep / | awk '{ print $5}' | sed 's/%//g')
+	TOTAL_DISK=$(df -h / | grep / | awk '{ print $2}')
+	USED_DISK=$(df -h / | grep / | awk '{ print $3}')
+	echo -e "Disk Usage: ${YELLOW}$DISK_USAGE%${NC}"
+	echo -e "Total Disk Space: ${YELLOW}${TOTAL_DISK}${NC}"
+	echo -e "Used Disk Space: ${YELLOW}${USED_DISK}${NC}"
+	if [ "$DISK_USAGE" -gt "$DISK_THRESHOLD" ]; then
+		echo -e "${RED}ALERT: Disk usage is above $DISK_THRESHOLD%${NC}"
+	else
+		echo -e "${GREEN}Disk usage is within normal range.${NC}"
+	fi
+}
+
+
+top_memory_processes() {
+	echo -e "${YELLOW}Top 3 memory consuming processes:${NC}"
+	ps -eo pid,ppid,cmd,%mem --sort=-%mem | head -n 4 | tail -n 3 | awk '{print $1
+	" " $2 " " $3 " " $4 "%"}'
+}
+
+
 check_cpu_usage() {
   CPU_USAGE=$(ps -eo pcpu | awk 'NR>1' | awk '{sum+=$1} END {print sum}')
   echo -e "CPU Usage: ${YELLOW}$CPU_USAGE%${NC}"
