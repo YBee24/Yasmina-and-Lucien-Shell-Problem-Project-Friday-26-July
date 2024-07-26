@@ -1,4 +1,3 @@
-echo "Good evening Lucien. Thank you dearly for helping me so, very much concerning the wonderful EC2 issue I had been experiencing. Let's get this project underway, eh?!"
 
 CPU_THRESHOLD=80
 MEMORY_THRESHOLD=80
@@ -35,6 +34,43 @@ top_cpu_processes() {
 }
 
 
-check_cpu_usage
-check_memory_usage
-top_cpu_processes
+PS3="Please select an option: "
+options=("All Reports" "Memory Usage" "CPU Usage" "Top CPU Processes" "Quit")
+select opt in "${options[@]}"
+do
+  case $opt in
+    "All Reports")
+      generate_report
+      ;;
+    "Memory Usage")
+      check_memory_usage
+      ;;
+    "CPU Usage")
+      check_cpu_usage
+      ;;
+    "Top CPU Processes")
+      top_cpu_processes
+      ;;
+    "Quit")
+      break
+      ;;
+    *) echo "Invalid option $REPLY";;
+  esac
+
+ echo -e "\nWould you like to download the report? (yes/no)"
+  read download_report
+  if [[ $download_report == "yes" ]]; then
+    generate_report
+    echo -e "${GREEN}Downloading the report...${NC}"
+    cp report.txt /path/to/your/desired/location/
+    echo -e "${GREEN}Report downloaded to /path/to/your/desired/location/report.txt${NC}"
+  else
+    echo -e "${YELLOW}Report not downloaded.${NC}"
+  fi
+
+  echo -e "\nThank you! Exiting the module.\n"
+  break
+done
+
+
+
